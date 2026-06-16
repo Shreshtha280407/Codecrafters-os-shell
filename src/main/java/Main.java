@@ -9,14 +9,23 @@ public class Main {
             String Command = sc.nextLine();
             if (Command.equals("exit")) {
                 break;
-            }
-            else if(Command.startsWith("echo ")){
+            } else if (Command.startsWith("echo ")) {
                 System.out.println(Command.substring(5));
-            }
-            else{
+            } else if (Command.startsWith("type")) {
+                String cmd = Command.substring(5);
+                if (cmd.equals("type") ||
+                        cmd.equals("echo") ||
+                        cmd.equals("exit")) {
+                    System.out.println(cmd + " is a shell builtin");
+
+                } else {
+                    System.out.println(cmd + ": not found");
+                }
+
+            } else {
                 System.out.println(Command + ": command not found");
             }
         }
-        
+
     }
 }
