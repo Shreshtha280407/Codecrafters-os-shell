@@ -7,6 +7,9 @@ public class Main {
             System.out.print("$ ");
             Scanner sc = new Scanner(System.in);
             String Command = sc.nextLine();
+            if (Command.equals("exit")) {
+                break;
+            }
             System.out.println(Command + ": command not found");
         }
     }
