@@ -13,7 +13,7 @@ public class Main {
             }
             String input = sc.nextLine();
 
-            if (input.equals("exit 0")) {
+            if (input.equals("exit") || input.startsWith("exit ")) {
                 break;
             }
 
