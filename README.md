@@ -1,63 +1,119 @@
-# CodeCrafters Shell — Java
+[![progress-banner](https://backend.codecrafters.io/progress/shell/677ed0af-79c0-4d5a-9271-33b410aa556e)](https://app.codecrafters.io/users/nipunkalsotra?r=2qF)
 
+# 🐚 Custom POSIX-Compliant Java Shell
+
+A high-performance, robust, and feature-rich Unix-like shell implementation built entirely in modern **Java 26** (utilizing preview features). This shell supports command parsing with advanced quote handling, redirection, multi-stage pipelines, background execution, and multiple shell builtins.
+
+Developed as part of the [CodeCrafters Build Your Own Shell Challenge](https://app.codecrafters.io/courses/shell/overview).
+
+---
+
+## ⚡ Live Terminal Demonstration
+
+Below is a simulated, real-time animation of the Java Shell parsing inputs, resolving executables, handling output redirections, managing concurrent background processes, and piping output.
+
+![Java Shell Demo](assets/demo.svg)
+
+---
+
+## 🚀 Key Features
+
+*   **Robust REPL Loop:** Prompts the user with `$ ` and handles user interrupts, empty commands, and whitespace-padded lines seamlessly.
+*   **Quote-Aware Parser:** Parses arguments while respecting:
+    *   Single quotes (`'...'`) to preserve literal contents.
+    *   Double quotes (`"..."`) with backslash escaping (`\"`, `\\`, etc.).
+    *   Unquoted backslash escapes (`\`).
+*   **Command Resolution:** Resolves commands against a pre-defined set of builtins or dynamically searches the system's `PATH` environment variable for executables.
+*   **Redirection Engine:**
+    *   Stdout redirection: Write (`>`, `1>`) and Append (`>>`, `1>>`).
+    *   Stderr redirection: Write (`2>`) and Append (`2>>`).
+*   **Multi-Stage Pipeling (`|`):** Supports chaining multiple commands by connecting the stdout of one command to the stdin of the next using multi-threaded piped streams.
+*   **Background Jobs (`&`):** Executes commands asynchronously in the background. Tracks running processes, prints their PIDs, and notifies the user with job details (e.g. `[1]+ Done <command>`) upon completion.
+*   **Built-in Commands:**
+    *   `exit`: Terminates the shell session.
+    *   `echo`: Outputs text (with support for redirected streams).
+    *   `type`: Identifies whether a command is a shell builtin or locate its path on disk.
+    *   `pwd`: Prints the current working directory.
+    *   `cd`: Changes the working directory (handles relative paths, absolute paths, and home shortcut `~`).
+    *   `jobs`: Lists all running/active background jobs.
+
+---
+
+## 🛠️ Architecture & Flow
+
+The shell is built on a clean, single-threaded execution pump for interactive command reading, coupled with a multi-threaded execution model for parallel pipeline streams and background processes.
+
+```mermaid
+graph TD
+    A[Start Shell REPL] --> B[Print Prompt & Read Line]
+    B --> C{Is line empty?}
+    C -- Yes --> B
+    C -- No --> D[Tokenize & Parse Command Line]
+    D --> E[Extract Redirection Targets & Background Flag]
+    E --> F{Contains Pipings '|'?}
+    
+    F -- Yes --> G[Split Pipelines & Launch Threaded Stream Pipes]
+    G --> B
+    
+    F -- No --> H{Is Builtin?}
+    H -- Yes --> I[Execute In-Process & Apply Redirections]
+    H -- No --> J[Resolve Command in PATH]
+    
+    J -- Found --> K{Background Flag '&'?}
+    K -- Yes --> L[Spawn Async Thread / Process & Register to Job Monitor]
+    K -- No --> M[Execute Sync Process & Wait for Exit]
+    J -- Not Found --> N[Print Command Not Found]
+    
+    I --> B
+    L --> B
+    M --> B
+    N --> B
 ```
-  ____          _     ____                _          
- / ___|   ___  | |   / ___|  ___ _ __ ___| |__   ___ 
- \___ \  / _ \ | |  | |  _  / _ \ '__/ __| '_ \ / _ \
-  ___) ||  __/ | |__| |_| ||  __/ | | (__| | | |  __/
- |____/  \___| |_____\____| \___|_|  \___|_| |_|\___|
 
-      Build Your Own Shell  •  Java Edition
-      [ parsing ]  [ executing ]  [ builtin commands ]
+---
+
+## 📂 Project Structure
+
+```text
+├── .codecrafters/           # Metadata for remote compilation & execution
+├── assets/
+│   └── demo.svg             # Terminal typing animation
+├── src/
+│   └── main/
+│       └── java/
+│           └── Main.java    # Main REPL, parser, redirection, and job control logic
+├── pom.xml                  # Maven configuration targeting Java 26
+└── your_program.sh          # Helper script to compile and launch the shell locally
 ```
 
-A Java starter repository for the CodeCrafters "Build Your Own Shell" challenge.
+---
 
-This project is meant to help you implement a simple POSIX-style shell in Java.
-The shell should parse commands, execute external programs, and support builtin
-commands such as `cd`, `pwd`, `echo`, and others.
+## ⚙️ Getting Started
 
-## Project Overview
+### Prerequisites
 
-- `src/main/java/Main.java` — main entry point for the shell implementation.
-- `your_program.sh` — convenience wrapper to run the shell locally.
-- `pom.xml` — Maven project configuration.
+*   **Java Development Kit (JDK) 26** or higher
+*   **Apache Maven**
 
-## Goals
+### Compilation & Local Execution
 
-- Parse and execute shell commands.
-- Support a REPL loop for interactive use.
-- Implement builtin commands like `cd`, `pwd`, and `echo`.
-- Run external programs using the native operating system.
+To compile and launch the shell on your local machine, execute:
 
-## Run Locally
-
-1. Make sure you have Java and Maven installed.
-2. Implement or update the shell logic in `src/main/java/Main.java`.
-3. Run the shell locally with:
-
-```sh
+```bash
+chmod +x your_program.sh
 ./your_program.sh
 ```
 
-> On Linux or macOS, `./your_program.sh` starts the shell using the Java code in
-> `src/main/java/Main.java`.
+This compiles the codebase using Maven into a self-contained jar file (`/tmp/codecrafters-build-shell-java/codecrafters-shell.jar`) with `--enable-preview` flags and starts the shell REPL.
 
-## Submit and Test
+---
 
-When your implementation is ready, submit it to CodeCrafters with:
+## 🧪 Testing and Submission
 
-```sh
-codecrafters submit
-```
+To submit your progress or run remotable test cases:
 
-This command sends your solution to the challenge server and streams test
-results to your terminal.
-
-## Notes
-
-- This repository is a starting point for the CodeCrafters challenge.
-- If you are viewing this on GitHub, the full interactive challenge is available
-  at [codecrafters.io](https://codecrafters.io).
-- Keep all shell logic inside `src/main/java/Main.java` unless the challenge
-  defines a different entry point.
+1. Install the [CodeCrafters CLI](https://codecrafters.io/cli).
+2. Execute the submission command:
+   ```bash
+   codecrafters submit
+   ```
