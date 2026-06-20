@@ -1,34 +1,63 @@
-[![progress-banner](https://backend.codecrafters.io/progress/shell/c151e2f2-140b-4727-b2a4-6194448a6902)](https://app.codecrafters.io/users/Shreshtha280407?r=2qF)
+# CodeCrafters Shell — Java
 
-This is a starting point for Java solutions to the
-["Build Your Own Shell" Challenge](https://app.codecrafters.io/courses/shell/overview).
+```
+  ____          _     ____                _          
+ / ___|   ___  | |   / ___|  ___ _ __ ___| |__   ___ 
+ \___ \  / _ \ | |  | |  _  / _ \ '__/ __| '_ \ / _ \
+  ___) ||  __/ | |__| |_| ||  __/ | | (__| | | |  __/
+ |____/  \___| |_____\____| \___|_|  \___|_| |_|\___|
 
-In this challenge, you'll build your own POSIX compliant shell that's capable of
-interpreting shell commands, running external programs and builtin commands like
-cd, pwd, echo and more. Along the way, you'll learn about shell command parsing,
-REPLs, builtin commands, and more.
+      Build Your Own Shell  •  Java Edition
+      [ parsing ]  [ executing ]  [ builtin commands ]
+```
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+A Java starter repository for the CodeCrafters "Build Your Own Shell" challenge.
 
-# Passing the first stage
+This project is meant to help you implement a simple POSIX-style shell in Java.
+The shell should parse commands, execute external programs, and support builtin
+commands such as `cd`, `pwd`, `echo`, and others.
 
-The entry point for your `shell` implementation is in `src/main/java/Main.java`.
-Study and uncomment the relevant code, then run the command below to execute the
-tests on our servers:
+## Project Overview
+
+- `src/main/java/Main.java` — main entry point for the shell implementation.
+- `your_program.sh` — convenience wrapper to run the shell locally.
+- `pom.xml` — Maven project configuration.
+
+## Goals
+
+- Parse and execute shell commands.
+- Support a REPL loop for interactive use.
+- Implement builtin commands like `cd`, `pwd`, and `echo`.
+- Run external programs using the native operating system.
+
+## Run Locally
+
+1. Make sure you have Java and Maven installed.
+2. Implement or update the shell logic in `src/main/java/Main.java`.
+3. Run the shell locally with:
+
+```sh
+./your_program.sh
+```
+
+> On Linux or macOS, `./your_program.sh` starts the shell using the Java code in
+> `src/main/java/Main.java`.
+
+## Submit and Test
+
+When your implementation is ready, submit it to CodeCrafters with:
 
 ```sh
 codecrafters submit
 ```
 
-Time to move on to the next stage!
+This command sends your solution to the challenge server and streams test
+results to your terminal.
 
-# Stage 2 & beyond
+## Notes
 
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `mvn` installed locally
-1. Run `./your_program.sh` to run your program, which is implemented in
-   `src/main/java/Main.java`.
-1. Run `codecrafters submit` to submit your solution to CodeCrafters. Test
-   output will be streamed to your terminal.
+- This repository is a starting point for the CodeCrafters challenge.
+- If you are viewing this on GitHub, the full interactive challenge is available
+  at [codecrafters.io](https://codecrafters.io).
+- Keep all shell logic inside `src/main/java/Main.java` unless the challenge
+  defines a different entry point.
